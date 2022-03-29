@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { RejectedIdeaAnalysis } from "./pages/analytics/rejectedIdeasAnalysis";
+import UserAccount from "./pages/MyAccount/UserAccount";
 
 const util = compose(applyMiddleware(ReduxThunk));
 function App() {
@@ -49,6 +50,11 @@ function App() {
               <Switch>
                 <Route path="/newCategory">
                   <BusinessCat />
+                </Route>
+              </Switch>
+              <Switch>
+                <Route path="/myAccount">
+                  <UserAccount />
                 </Route>
               </Switch>
               <Switch>

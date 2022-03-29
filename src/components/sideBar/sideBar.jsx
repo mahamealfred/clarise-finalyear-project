@@ -99,12 +99,14 @@ const SideBar = () => {
               </h6>
 
               <ul className="navbar-nav mb-md-3">
+              <Link to="myAccount">
                 <li className="nav-item">
                   <span className="nav-link" href="" target="_blank">
                     <i class="far fa-question-circle text-primary"></i>
                     <span className="nav-link-text">My Account Info</span>
                   </span>
                 </li>
+                </Link>
                 {/* <li className="nav-item">
                   <a className="nav-link" href="#" target="_blank">
                     <i class="far fa-user-circle text-primary"></i>

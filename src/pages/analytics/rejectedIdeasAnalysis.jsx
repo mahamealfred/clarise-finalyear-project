@@ -9,7 +9,7 @@ export const RejectedIdeaAnalysis = () => {
     let rejectedUnder30 = 0;
     let rejectedUnder50 = 0;
     let rejectedUnder70 = 0;
-    let rejectedUnder90 = 0;
+
     let approved = 0;
     try {
       const responce = await axios.get(url.businessIdea);
@@ -25,9 +25,6 @@ export const RejectedIdeaAnalysis = () => {
           } else if (responce.data.data[key].ideaSrengthPersentage < 70) {
             rejectedUnder70 = rejectedUnder70 + 1;
           } 
-          // else if (responce.data.data[key].ideaSrengthPersentage < 90) {
-          //   rejectedUnder90 = rejectedUnder90 + 1;
-          // } 
           else {
             // rejectedUnder99 = rejectedUnder99 + 1;
             console.log("regected");
@@ -42,16 +39,19 @@ export const RejectedIdeaAnalysis = () => {
         { name: "Rejected Under 30%", value: rejectedUnder30 },
         { name: "Rejected Under 50%", value: rejectedUnder50 },
         { name: "Rejected Under 70%", value: rejectedUnder70 },
-        // { name: "Rejected Under 90%", value: rejectedUnder90 },
         { name: "Approved", value: approved },
       ];
       setPieData(data);
+    
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    getData();
+    async function fetchData(){
+await getData();
+    }
+    fetchData();
   }, []);
   return (
     <div className="home">

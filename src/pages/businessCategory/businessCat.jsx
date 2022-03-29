@@ -148,7 +148,7 @@ const BusinessCat = () => {
                       style={{ height: "35px", position: "relative", top: 35 }}
                       className="btn btn-success"
                       onClick={handleAddClick}
-                      className="btn btn btn-primary"
+                      // className="btn btn btn-primary"
                     >
                       +
                     </h3>

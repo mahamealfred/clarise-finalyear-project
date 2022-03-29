@@ -14,6 +14,9 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import logo from "../../../images/bdfLogo.jpg";
 
 // or
 import { DialogContentText } from '@mui/material';
@@ -121,12 +124,53 @@ const BusinessIdeaReport = (props) => {
       </>
     );
   };
+
+  const generatePdf=()=>{
+    const doc = new jsPDF();
+      
+    doc.addImage(logo, "JPEG", 20, 20, 40, 40);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Business Clarity Analysis System", 20, 20);
+    doc.setFont("Helvertica", "normal");
+    doc.text(`Date ${todaysDate()}`, 140, 60);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Business Ideas Report", 80, 70);
+    const tableColumn=['Business Name','Owner','Status','Ideas Strenght %']
+      const tableRows=[]
+        
+      businessIdea.map(business=>{
+        const rowsData=[
+          business.name,
+          business.owner,
+          business.status,
+          business.ideaSrengthPersentage +"%",
+        ];
+        tableRows.push(rowsData);
+      });
+      doc.autoTable(tableColumn, tableRows, { 
+        startY: 80,
+        theme: "striped",
+       margin: 10,
+       styles: {
+         font: "courier",
+         fontSize: 12,
+         overflow: "linebreak",
+         cellPadding: 3,
+         halign: "center"
+       },
+       head: [tableColumn],
+       body:[tableRows],
+       });
+    
+    const date = Date().split(" ");
+    const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];
+    
+    doc.save(`report_on_${dateStr}.pdf`);
+  }
   
   useEffect(() => {
     async function fetchData(){
-     
-      //  setBusinessId(businessId)
-       
+      //  setBusinessId(businessId  
       await  getData();
     }
    fetchData();
@@ -142,9 +186,7 @@ const BusinessIdeaReport = (props) => {
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
           open={open}
-        >
-                      <>
-                   
+        >        
           <BootstrapDialogTitle
             id="customized-dialog-title"
             onClose={handleClose}
@@ -160,16 +202,17 @@ const BusinessIdeaReport = (props) => {
             <DialogContentText>{singlebusiness.owner}</DialogContentText>
             <DialogTitle>Business Status:</DialogTitle>
             <DialogContentText>{singlebusiness.status}</DialogContentText>
+            <DialogTitle>Ideas Strength:</DialogTitle>
+            <DialogContentText>{singlebusiness.ideaSrengthPersentage +"%"}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button autoFocus onClick={handleClose}>
               Close
             </Button>
           </DialogActions>
-          </>
+       
        
         </BootstrapDialog>
-        
       </div>
 
       <div className="row">
@@ -181,13 +224,15 @@ const BusinessIdeaReport = (props) => {
             <div className="card-header bg-transparent border-0">
               <h3 className="text-white mb-0">Business Ideas Report</h3>
             </div>
+            
             <div className="table-responsive">
-              <ReactToExcel
-                className="btn"
-                table="dayly-report"
-                filename={`report on ${todaysDate()}`}
-                buttonText="EXPORT"
-              />
+            <button
+                     onClick={generatePdf}
+                      className="btn "
+                      style={{color:"white"}}
+                    >
+                      Generate Report
+                    </button>
               <table
                 className="table align-items-center table-dark table-flush"
                 id="dayly-report"
