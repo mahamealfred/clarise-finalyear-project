@@ -35,6 +35,7 @@ function App() {
                 <Home />
               </Route>
             </Switch>
+
           ) : (
             <></>
           )}
@@ -83,11 +84,18 @@ function App() {
           )}
 
           {isAuth && userType === "user" ? (
+            <>
             <Switch>
               <Route path="/newBusinessIdea">
                 <BusinessIdea />
               </Route>
             </Switch>
+             <Switch>
+             <Route path="/myAccount">
+               <UserAccount />
+             </Route>
+           </Switch>
+           </>
           ) : (
             <></>
           )}
