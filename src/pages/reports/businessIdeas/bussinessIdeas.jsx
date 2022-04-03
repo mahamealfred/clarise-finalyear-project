@@ -134,18 +134,68 @@ const BusinessIdeaReport = (props) => {
     doc.setFont("Helvertica", "normal");
     doc.text(`Date ${todaysDate()}`, 140, 60);
     doc.setFont("Helvertica", "bold");
-    doc.text("Business Ideas Report", 80, 70);
+    doc.text("Rejected Business Ideas Report", 80, 70);
     const tableColumn=['Business Name','Owner','Status','Ideas Strenght %']
       const tableRows=[]
         
       businessIdea.map(business=>{
-        const rowsData=[
-          business.name,
-          business.owner,
-          business.status,
-          business.ideaSrengthPersentage +"%",
-        ];
-        tableRows.push(rowsData);
+        if( business.status==="rejected"){
+          const rowsData=[
+            business.name,
+            business.owner,
+            business.status,
+            business.ideaSrengthPersentage +"%",
+          ];
+          tableRows.push(rowsData);
+        }
+        
+        
+      });
+      doc.autoTable(tableColumn, tableRows, { 
+        startY: 80,
+        theme: "striped",
+       margin: 10,
+       styles: {
+         font: "courier",
+         fontSize: 12,
+         overflow: "linebreak",
+         cellPadding: 3,
+         halign: "center"
+       },
+       head: [tableColumn],
+       body:[tableRows],
+       });
+    
+    const date = Date().split(" ");
+    const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];
+    
+    doc.save(`report_on_${dateStr}.pdf`);
+  }
+  const generateApprovedIdeaPdf=()=>{
+    const doc = new jsPDF();
+      
+    doc.addImage(logo, "JPEG", 20, 20, 40, 40);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Business Clarity Analysis System", 20, 20);
+    doc.setFont("Helvertica", "normal");
+    doc.text(`Date ${todaysDate()}`, 140, 60);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Approved Business Ideas Report", 80, 70);
+    const tableColumn=['Business Name','Owner','Status','Ideas Strenght %']
+      const tableRows=[]
+        
+      businessIdea.map(business=>{
+        if( business.status==="approved"){
+          const rowsData=[
+            business.name,
+            business.owner,
+            business.status,
+            business.ideaSrengthPersentage +"%",
+          ];
+          tableRows.push(rowsData);
+        }
+        
+        
       });
       doc.autoTable(tableColumn, tableRows, { 
         startY: 80,
@@ -168,6 +218,7 @@ const BusinessIdeaReport = (props) => {
     doc.save(`report_on_${dateStr}.pdf`);
   }
   
+
   useEffect(() => {
     async function fetchData(){
       //  setBusinessId(businessId  
@@ -231,7 +282,14 @@ const BusinessIdeaReport = (props) => {
                       className="btn "
                       style={{color:"white"}}
                     >
-                      Generate Report
+                      Generate Rejected Ideas Report
+                    </button>
+                    <button
+                     onClick={generateApprovedIdeaPdf}
+                      className="btn "
+                      style={{color:"white"}}
+                    >
+                      Generate Approved Ideas Report
                     </button>
               <table
                 className="table align-items-center table-dark table-flush"
@@ -313,7 +371,6 @@ const BusinessIdeaReport = (props) => {
                                       +business.ideaSrengthPersentage + "%",
                                   }}
                                 ></div>
-                              
                               </div>
                             </div>
                           </div>
@@ -329,7 +386,6 @@ const BusinessIdeaReport = (props) => {
                               getSingleBusiness()
                              //setSinglebusiness(business._id)
                             }}
-                            
                           >
                             details
                           </button>
