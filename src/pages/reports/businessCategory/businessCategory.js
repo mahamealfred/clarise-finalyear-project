@@ -83,19 +83,19 @@ const BusinessCatReport = (props) => {
   };
  
 
-  console.log("catagoryID:",categoryId)
+  //console.log("catagoryID:",categoryId)
  
-  const getSingleBusinessCategory=async ()=>{
+  const getSingleBusinessCategory=async (id)=>{
     
     try {  
-       const response=await axios.get(`http://localhost:5000/BCA/bisinessDefinition/category/${categoryId}`)
-      // const response=await axios.get(`http://localhost:5000/BCA/bisinessDefinition/category/623ad830165ddf45864e5d7d`)
+      setCategoryId(id)
+       const response=await axios.get(`http://localhost:5000/BCA/bisinessDefinition/category/${id}`)
        const result=response.data.data
        console.log('results..:',result);
        setSingleCategory(result)
        setOpen(true)
        setCategoryId("")
-       console.log('ID..:',categoryId);
+       console.log('ID..:',id);
        console.log('payload..:',singleCategory);
        
      } catch (error) {
@@ -208,8 +208,8 @@ const BusinessCatReport = (props) => {
                             data-toggle="modal"
                             data-target="#user-form-modal"
                             onClick={async()=>{
-                           await  setCategoryId(business._id)
-                           await getSingleBusinessCategory()
+                           //await  setCategoryId(business._id)
+                           await getSingleBusinessCategory(business._id)
                            
                             
                             }}

@@ -74,21 +74,21 @@ const BusinessIdeaReport = (props) => {
   };
 
   let status = false;
-  const getSingleBusiness=async (props)=>{
-    
+  const getSingleBusiness=async (id)=>{ 
+
     try {  
-       const response=await axios.get(`http://localhost:5000/BCA/bisinessIdea/singleIdea/${businessId}`)
-       const result=response.data.data
-       console.log('results..:',result);
-       setSinglebusiness(result)
-       //console.log(urll)
-       setOpen(true);
-       console.log('ID..:',businessId)
-       console.log('payload..:',singlebusiness) 
-     } catch (error) {
-       console.log("error is " + error);
-     }
-    
+      setBusinessId(id)
+      const response=await axios.get(`http://localhost:5000/BCA/bisinessIdea/singleIdea/${id}`)
+      const result=response.data.data
+      console.log('results..:',result);
+      setSinglebusiness(result)
+      //console.log(urll)
+      setOpen(true);
+      console.log('ID..:',id)
+      console.log('payload..:',singlebusiness) 
+    } catch (error) {
+      console.log("error is " + error);
+    }  
   }
   
   
@@ -109,6 +109,7 @@ const BusinessIdeaReport = (props) => {
       console.log("error is " + error);
     }
   };
+
   const todaysDate = () => {
     const time = new Date(Date.now());
     const year = time.getFullYear();
@@ -382,8 +383,7 @@ const BusinessIdeaReport = (props) => {
                             data-toggle="modal"
                             data-target="#user-form-modal"
                             onClick={()=>{
-                              setBusinessId(business._id)
-                              getSingleBusiness()
+                              getSingleBusiness(business._id)
                              //setSinglebusiness(business._id)
                             }}
                           >
