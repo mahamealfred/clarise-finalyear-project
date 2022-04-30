@@ -5,6 +5,7 @@ export const GETBUSSINESSIDEAS = "GETBUSSINESSIDEAS";
 export const postBusinessIdea = (
   name,
   owner,
+  capital,
   bisinessDefinition,
   conditions,
   description,
@@ -13,11 +14,13 @@ export const postBusinessIdea = (
 ) => {
   let responceData = "";
   console.log(description);
+  console.log("captital",capital)
   return async (dispatch) => {
     try {
       const responce = await axios.post(url.businessIdea, {
         name: name,
         owner: owner,
+        capital:capital,
         bisinessDefinition: bisinessDefinition,
         conditions: conditions,
         description: description,

@@ -13,6 +13,7 @@ const BusinessIdea = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
+  const [capital,setCapital]=useState("");
 
   const [condition, setCondition] = useState([
     {
@@ -81,11 +82,12 @@ const BusinessIdea = () => {
   const names = localStorage.getItem("name");
   const handleSubmit = (event) => {
     event.preventDefault();
-
+console.log("capital",capital);
     dispatch(
       postBusinessIdea(
         name,
         owner,
+        capital,
         bisinessDefinition,
         condition,
         description,
@@ -264,10 +266,34 @@ const BusinessIdea = () => {
               ) : (
                 <div></div>
               )}
-
+ <div className="pl-lg-6">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label
+                        className="form-control-label"
+                        for="input-capital"
+                      >
+                        Your Capital
+                      </label>
+                      <input
+                        style={{ borderColor: "blue" }}
+                        type="text"
+                        id="input-capital"
+                        className="form-control"
+                        placeholder="Your  Capital"
+                        value={capital}
+                        onChange={(e) => setCapital(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h6 className="heading-small text-muted mb-4 pl-lg-6">
                 More Information About business Category
               </h6>
+             
+
               <div>
                 <input
                   type="file"

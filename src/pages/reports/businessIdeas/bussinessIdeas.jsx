@@ -92,12 +92,6 @@ const BusinessIdeaReport = (props) => {
   }
   
   
-  // const handleClickOpen = async() => {
-  //   await getSingleBusiness(businessId);
-  //   setOpen(true);
-      
-  // };
-  //const urll=`http://localhost:5000/BCA/bisinessIdea/singleIdea/${businessId}`
  
   
   const getData = async () => {
@@ -109,15 +103,8 @@ const BusinessIdeaReport = (props) => {
       console.log("error is " + error);
     }
   };
-
-  const todaysDate = () => {
-    const time = new Date(Date.now());
-    const year = time.getFullYear();
-    const month = time.getMonth();
-    const day = time.getDay();
-    const date = `${year}-${month}-${day}`;
-    return date;
-  };
+const todaydate=new Date().toISOString().slice(0,10);
+  
   const Modal = (data, status) => {
     return (
       <>
@@ -133,10 +120,10 @@ const BusinessIdeaReport = (props) => {
     doc.setFont("Helvertica", "bold");
     doc.text("Business Clarity Analysis System", 20, 20);
     doc.setFont("Helvertica", "normal");
-    doc.text(`Date ${todaysDate()}`, 140, 60);
+    doc.text(`Date ${todaydate}`, 140, 60);
     doc.setFont("Helvertica", "bold");
     doc.text("Rejected Business Ideas Report", 80, 70);
-    const tableColumn=['Business Name','Owner','Status','Ideas Strenght %']
+    const tableColumn=['Business Name','Owner','Status','Capital','Ideas Strenght %']
       const tableRows=[]
         
       businessIdea.map(business=>{
@@ -145,6 +132,7 @@ const BusinessIdeaReport = (props) => {
             business.name,
             business.owner,
             business.status,
+            business.capital,
             business.ideaSrengthPersentage +"%",
           ];
           tableRows.push(rowsData);
@@ -167,10 +155,52 @@ const BusinessIdeaReport = (props) => {
        body:[tableRows],
        });
     
-    const date = Date().split(" ");
-    const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];
     
-    doc.save(`report_on_${dateStr}.pdf`);
+    doc.save(`report_on_${todaydate}.pdf`);
+  }
+  const generateUnfinisedIdeaPdf=()=>{
+    const doc = new jsPDF();
+      
+    doc.addImage(logo, "JPEG", 20, 20, 40, 40);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Business Clarity Analysis System", 20, 20);
+    doc.setFont("Helvertica", "normal");
+    doc.text(`Date ${todaydate}`, 140, 60);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Unfinished Business Ideas Report", 80, 70);
+    const tableColumn=['Business Name','Owner','Status','Capital','Ideas Strenght %']
+      const tableRows=[]
+        
+      businessIdea.map(business=>{
+        if( business.status==="pending"){
+          const rowsData=[
+            business.name,
+            business.owner,
+            business.status,
+            business.capital,
+            business.ideaSrengthPersentage +"%",
+          ];
+          tableRows.push(rowsData);
+        }
+        
+        
+      });
+      doc.autoTable(tableColumn, tableRows, { 
+        startY: 80,
+        theme: "striped",
+       margin: 10,
+       styles: {
+         font: "courier",
+         fontSize: 12,
+         overflow: "linebreak",
+         cellPadding: 3,
+         halign: "center"
+       },
+       head: [tableColumn],
+       body:[tableRows],
+       });
+    
+    doc.save(`report_on_${todaydate}.pdf`);
   }
   const generateApprovedIdeaPdf=()=>{
     const doc = new jsPDF();
@@ -179,10 +209,10 @@ const BusinessIdeaReport = (props) => {
     doc.setFont("Helvertica", "bold");
     doc.text("Business Clarity Analysis System", 20, 20);
     doc.setFont("Helvertica", "normal");
-    doc.text(`Date ${todaysDate()}`, 140, 60);
+    doc.text(`Date ${todaydate}`, 140, 60);
     doc.setFont("Helvertica", "bold");
     doc.text("Approved Business Ideas Report", 80, 70);
-    const tableColumn=['Business Name','Owner','Status','Ideas Strenght %']
+    const tableColumn=['Business Name','Owner','Status','Capital','Ideas Strenght %']
       const tableRows=[]
         
       businessIdea.map(business=>{
@@ -191,6 +221,7 @@ const BusinessIdeaReport = (props) => {
             business.name,
             business.owner,
             business.status,
+            business.capital,
             business.ideaSrengthPersentage +"%",
           ];
           tableRows.push(rowsData);
@@ -213,10 +244,7 @@ const BusinessIdeaReport = (props) => {
        body:[tableRows],
        });
     
-    const date = Date().split(" ");
-    const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];
-    
-    doc.save(`report_on_${dateStr}.pdf`);
+    doc.save(`report_on_${todaydate}.pdf`);
   }
   
 
@@ -292,6 +320,13 @@ const BusinessIdeaReport = (props) => {
                     >
                       Generate Approved Ideas Report
                     </button>
+                    <button
+                     onClick={generateUnfinisedIdeaPdf}
+                      className="btn "
+                      style={{color:"white"}}
+                    >
+                      Generate  Unfinished Ideas Report
+                    </button>
               <table
                 className="table align-items-center table-dark table-flush"
                 id="dayly-report"
@@ -313,6 +348,9 @@ const BusinessIdeaReport = (props) => {
                     </th>
                     <th scope="col" className="sort" data-sort="completion">
                       Idea Strength
+                    </th>
+                    <th scope="col" className="sort" data-sort="completion">
+                      Capital
                     </th>
                     <th scope="col" className="sort" data-sort="completion">
                       Details
@@ -375,6 +413,12 @@ const BusinessIdeaReport = (props) => {
                               </div>
                             </div>
                           </div>
+                        </td>
+                        <td>
+                          <span className="badge badge-dot mr-4">
+                            <i className="bg-success"></i>
+                            <span className="">{business.capital +"$"}</span>
+                          </span>
                         </td>
                         <td className="budget">
                           <button

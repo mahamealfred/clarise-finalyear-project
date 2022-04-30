@@ -4,7 +4,7 @@ import { url } from "../../constants/url";
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import logo from "../../images/bdfLogo.jpg"
+import logo from "../../images/bdfLogo.jpg";
 
 import { data } from "../../pages/analytics/rejectedIdeasAnalysis";
 const COLORS = ["#c40065", "#b000c4", "#c49600", "#00c47f", "#17c400"];
@@ -34,26 +34,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-
 export default function RejectedIdeaChart(props) {
-
-
-  const todaysDate = () => {
-    const time = new Date(Date.now());
-    const year = time.getFullYear();
-    const month = time.getMonth();
-    const day = time.getDay();
-    const date = `${year}-${month}-${day}`;
-    return date;
-  };
-  const todayDate=()=>{
-  
-const today = new Date();
-const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-return date;
-  }
-  
-
   const [pieData, setPieData] = useState([]);
   const getData = async () => {
     let rejectedUnder30 = 0;
@@ -63,7 +44,7 @@ return date;
     let approved = 0;
     try {
       const responce = await axios.get(url.businessIdea);
-      console.log('status...',responce.data.data[0].status);
+      console.log("status...", responce.data.data[0].status);
       for (const key in responce.data.data) {
         let status = responce.data.data[key].status;
 
@@ -74,8 +55,7 @@ return date;
             rejectedUnder50 = rejectedUnder50 + 1;
           } else if (responce.data.data[key].ideaSrengthPersentage < 70) {
             rejectedUnder70 = rejectedUnder70 + 1;
-          } 
-          else {
+          } else {
             // rejectedUnder99 = rejectedUnder99 + 1;
             console.log("regected");
           }
@@ -89,61 +69,57 @@ return date;
         { name: "Rejected Under 30%", value: rejectedUnder30 },
         { name: "Rejected Under 50%", value: rejectedUnder50 },
         { name: "Rejected Under 70%", value: rejectedUnder70 },
-        { name: "Approved", value: approved},
+        { name: "Approved", value: approved },
       ];
       setPieData(data);
     } catch (error) {
       console.log(error);
     }
   };
+  const todaydate = new Date().toISOString().slice(0, 10);
 
-const generatePdf=()=>{
-  const doc = new jsPDF();
-    
-  doc.addImage(logo, "JPEG", 20, 20, 40, 40);
-  doc.setFont("Helvertica", "bold");
-  doc.text("Business Clarity Analysis System", 20, 20);
-  doc.setFont("Helvertica", "normal");
-    doc.text(`Date ${todaysDate()}`, 140, 70);
+  const generatePdf = () => {
+    const doc = new jsPDF();
+
+    doc.addImage(logo, "JPEG", 20, 20, 40, 40);
     doc.setFont("Helvertica", "bold");
-  doc.text("Rejected Business Analysis", 80, 90);
-  const tableColumn=[]
-    const tableRows=[]
-      const columnData=['Business Ideas Analysis']
-      
-      tableColumn.push(columnData)
-    data.map(dt=>{
-      const rowsData=[
-        dt.name +": "+ dt.value
-      ];
+    doc.text("Business Clarity Analysis System", 20, 20);
+    doc.setFont("Helvertica", "normal");
+    doc.text(`Date ${todaydate}`, 140, 70);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Rejected Business Analysis", 80, 90);
+    const tableColumn = [];
+    const tableRows = [];
+    const columnData = ["Business Ideas Analysis"];
+
+    tableColumn.push(columnData);
+    data.map((dt) => {
+      const rowsData = [dt.name + ": " + dt.value];
       tableRows.push(rowsData);
     });
-    doc.autoTable(tableColumn, tableRows, { 
+    doc.autoTable(tableColumn, tableRows, {
       startY: 100,
       theme: "grid",
-      margin:40,
-     
-     styles: {
-       font: "courier",
-       fontSize: 12,
-       overflow: "linebreak",
-       cellPadding: 4,
-       halign: "center",
-       fontWeight:"bold",
-     },
-     head: [tableColumn],
-     body:[tableRows],
-     });
-  
-  const date = Date().split(" ");
-  const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];
-  
-  doc.save(`report_on_${dateStr}.pdf`);
-}
+      margin: 40,
+
+      styles: {
+        font: "courier",
+        fontSize: 12,
+        overflow: "linebreak",
+        cellPadding: 4,
+        halign: "center",
+        fontWeight: "bold",
+      },
+      head: [tableColumn],
+      body: [tableRows],
+    });
+
+    doc.save(`report_on_${todaydate}.pdf`);
+  };
 
   useEffect(() => {
-    async function fetchData(){
-await getData();
+    async function fetchData() {
+      await getData();
     }
     fetchData();
   }, []);
@@ -158,21 +134,15 @@ await getData();
             <div className="card-header bg-transparent border-0">
               <h3 className="text-white mb-0">Rejected Ideas Analysis</h3>
             </div>
-            
+
             <div className="table-responsive">
-            <button
-                     onClick={generatePdf}
-                      className="btn "
-                      style={{color:"white"}}
-                    >
-                      Generate Report
-                    </button>
-              {/* <ReactToExcel
-                className="btn"
-                table="dayly-report"
-                filename={`report on ${todaysDate()}`}
-                buttonText="EXPORT"
-              /> */}
+              <button
+                onClick={generatePdf}
+                className="btn "
+                style={{ color: "white" }}
+              >
+                Generate Report
+              </button>
               <table
                 className="table align-items-center table-dark table-flush"
                 id="dayly-report"
