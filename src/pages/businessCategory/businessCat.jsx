@@ -5,6 +5,7 @@ import PopUpFeed from "../../components/popup/popup";
 
 const BusinessCat = () => {
   const [name, setName] = useState("");
+  const [capital,setCapital]=useState("");
   const [categotyType, setCategotyType] = useState([
     {
       id: "",
@@ -74,7 +75,7 @@ const BusinessCat = () => {
   const HandleSubmit = (event) => {
     event.preventDefault();
     // console.log(categotyType, condition);
-    dispatch(postBusinessCategory(name, categotyType, condition));
+    dispatch(postBusinessCategory(name,capital, categotyType, condition));
   };
   // useEffect(() => {}, []);
   return (
@@ -165,9 +166,31 @@ const BusinessCat = () => {
               ))}
 
               <h6 className="heading-small text-muted mb-4 pl-lg-6">
-                Business Criterion information
+                Business criterion information
               </h6>
-
+              <div className="pl-lg-6">
+                <div className="row">
+                  <div className="col-lg-7">
+                    <div className="form-group has-warning">
+                      <label
+                        className="form-control-label "
+                        for="input-username"
+                      >
+                        Category criterion
+                      </label>
+                      <input
+                        style={{ borderColor: "blue" }}
+                        type="text"
+                        id="input-username"
+                        className="form-control "
+                        placeholder="Enter Capital"
+                        value={capital}
+                        onChange={(e) => setCapital(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
               {condition.map((data, index) => (
                 <div className="pl-lg-6">
                   <div className="row">

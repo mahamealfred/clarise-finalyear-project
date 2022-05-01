@@ -13,7 +13,7 @@ const Home = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              <h1>For the clarification Of projects</h1>
+              <h1>For the clarification of projects</h1>
               <h2>
                 Systematically analysis the business/project to the system for
                 support

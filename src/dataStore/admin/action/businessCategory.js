@@ -3,13 +3,14 @@ import { url } from "../../../constants/url";
 export const POSTBUSINESSCATEGPRY = "POSTBUSINESSCATEGPRY";
 export const GETBUSINESSCATEGORY = "GETBUSINESSCATEGORY";
 export const GETSINGLEBUSINESSCATEGORY = "GETBUSINESSCATEGORY";
-export const postBusinessCategory = (name, categoryType, condition) => {
+export const postBusinessCategory = (name,capital, categoryType, condition) => {
   let responceData = "";
   return async (dispatch) => {
     try {
       const responce = await axios.post(url.businessDefinition, {
         name: name,
         category: categoryType,
+        capital:capital,
         conditions: condition,
       });
       responceData = responce.data;

@@ -112,6 +112,96 @@ const todaydate=new Date().toISOString().slice(0,10);
       </>
     );
   };
+  const generateApproveAbove500kdIdeaPdf=()=>{
+    const doc = new jsPDF();
+      
+    doc.addImage(logo, "JPEG", 20, 20, 40, 40);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Business Clarity Analysis System", 20, 20);
+    doc.setFont("Helvertica", "normal");
+    doc.text(`Date ${todaydate}`, 140, 60);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Approved  Business Ideas Report Above 500000rwf", 55, 70);
+    const tableColumn=['Business Name','Owner','Status','Capital','Ideas Strenght %']
+      const tableRows=[]
+        
+      businessIdea.map(business=>{
+        if( (business.capital>=500000) && (business.status==="approved")){
+          const rowsData=[
+            business.name,
+            business.owner,
+            business.status,
+            business.capital +"rwf",
+            business.ideaSrengthPersentage +"%",
+          ];
+          tableRows.push(rowsData);
+        }
+        
+        
+      });
+      doc.autoTable(tableColumn, tableRows, { 
+        startY: 80,
+        theme: "striped",
+       margin: 10,
+       styles: {
+         font: "courier",
+         fontSize: 12,
+         overflow: "linebreak",
+         cellPadding: 3,
+         halign: "center"
+       },
+       head: [tableColumn],
+       body:[tableRows],
+       });
+    
+    
+    doc.save(`report_on_${todaydate}.pdf`);
+  }
+  const generateApproveBelow500kdeaPdf=()=>{
+    const doc = new jsPDF();
+      
+    doc.addImage(logo, "JPEG", 20, 20, 40, 40);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Business Clarity Analysis System", 20, 20);
+    doc.setFont("Helvertica", "normal");
+    doc.text(`Date ${todaydate}`, 140, 60);
+    doc.setFont("Helvertica", "bold");
+    doc.text("Approved  Business Ideas Report below 500000rwf", 55, 70);
+    const tableColumn=['Business Name','Owner','Status','Capital','Ideas Strenght %']
+      const tableRows=[]
+        
+      businessIdea.map(business=>{
+        if( (business.capital<500000) && (business.status==="approved")){
+          const rowsData=[
+            business.name,
+            business.owner,
+            business.status,
+            business.capital +"rwf",
+            business.ideaSrengthPersentage +"%",
+          ];
+          tableRows.push(rowsData);
+        }
+        
+        
+      });
+      doc.autoTable(tableColumn, tableRows, { 
+        startY: 80,
+        theme: "striped",
+       margin: 10,
+       styles: {
+         font: "courier",
+         fontSize: 12,
+         overflow: "linebreak",
+         cellPadding: 3,
+         halign: "center"
+       },
+       head: [tableColumn],
+       body:[tableRows],
+       });
+    
+    
+    doc.save(`report_on_${todaydate}.pdf`);
+  }
 
   const generatePdf=()=>{
     const doc = new jsPDF();
@@ -122,7 +212,7 @@ const todaydate=new Date().toISOString().slice(0,10);
     doc.setFont("Helvertica", "normal");
     doc.text(`Date ${todaydate}`, 140, 60);
     doc.setFont("Helvertica", "bold");
-    doc.text("Rejected Business Ideas Report", 80, 70);
+    doc.text("Rejected Business Ideas Report", 70, 70);
     const tableColumn=['Business Name','Owner','Status','Capital','Ideas Strenght %']
       const tableRows=[]
         
@@ -132,7 +222,7 @@ const todaydate=new Date().toISOString().slice(0,10);
             business.name,
             business.owner,
             business.status,
-            business.capital,
+            business.capital +"rwf",
             business.ideaSrengthPersentage +"%",
           ];
           tableRows.push(rowsData);
@@ -177,7 +267,7 @@ const todaydate=new Date().toISOString().slice(0,10);
             business.name,
             business.owner,
             business.status,
-            business.capital,
+            business.capital +"rwf",
             business.ideaSrengthPersentage +"%",
           ];
           tableRows.push(rowsData);
@@ -221,7 +311,7 @@ const todaydate=new Date().toISOString().slice(0,10);
             business.name,
             business.owner,
             business.status,
-            business.capital,
+            business.capital +"rwf",
             business.ideaSrengthPersentage +"%",
           ];
           tableRows.push(rowsData);
@@ -311,21 +401,35 @@ const todaydate=new Date().toISOString().slice(0,10);
                       className="btn "
                       style={{color:"white"}}
                     >
-                      Generate Rejected Ideas Report
+                       Rejected Ideas Report
                     </button>
                     <button
                      onClick={generateApprovedIdeaPdf}
                       className="btn "
                       style={{color:"white"}}
                     >
-                      Generate Approved Ideas Report
+                      Approved Ideas Report
                     </button>
                     <button
                      onClick={generateUnfinisedIdeaPdf}
                       className="btn "
                       style={{color:"white"}}
                     >
-                      Generate  Unfinished Ideas Report
+                       Unfinished Ideas Report
+                    </button>
+                    <button
+                     onClick={generateApproveBelow500kdeaPdf}
+                      className="btn "
+                      style={{color:"white"}}
+                    >
+                       Approved Ideas Report below 500000rwf 
+                    </button>
+                    <button
+                     onClick={generateApproveAbove500kdIdeaPdf}
+                      className="btn "
+                      style={{color:"white"}}
+                    >
+                     Approved Ideas Report above 500000rwf  
                     </button>
               <table
                 className="table align-items-center table-dark table-flush"
@@ -417,7 +521,7 @@ const todaydate=new Date().toISOString().slice(0,10);
                         <td>
                           <span className="badge badge-dot mr-4">
                             <i className="bg-success"></i>
-                            <span className="">{business.capital +"$"}</span>
+                            <span className="">{business.capital+" "+"Rwf"}</span>
                           </span>
                         </td>
                         <td className="budget">

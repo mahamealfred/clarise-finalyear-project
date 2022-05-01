@@ -274,7 +274,7 @@ console.log("capital",capital);
                         className="form-control-label"
                         for="input-capital"
                       >
-                        Your Capital
+                        Your capital in Rwf
                       </label>
                       <input
                         style={{ borderColor: "blue" }}
