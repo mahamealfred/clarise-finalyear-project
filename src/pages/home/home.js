@@ -13,14 +13,14 @@ const Home = () => {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              <h1>For The Clarification Of Projects</h1>
+              <h1>For the clarification Of projects</h1>
               <h2>
-                Systematically Analysis The Business/Project To The System For
-                Support
+                Systematically analysis the business/project to the system for
+                support
               </h2>
               <div className="d-flex justify-content-center justify-content-lg-start">
                 <a href="#about" className="btn-get-started scrollto">
-                  Get Started
+                  Get started
                 </a>
               </div>
             </div>
