@@ -60,6 +60,7 @@ const BusinessCatReport = (props) => {
   const [businessCat, setBusinessCat] = useState([]);
   const [categoryId,setCategoryId]=useState("");
   const [singleCategory,setSingleCategory]=useState([]);
+  const [criterios,setCriterios]=useState([])
 
   // const handleClickOpen = async() => {
   //   console.log(categoryId)
@@ -84,6 +85,13 @@ const BusinessCatReport = (props) => {
  
 
   //console.log("catagoryID:",categoryId)
+  const datas=[{
+    name:"bwiza",value:"2"
+  },{
+    name:"alfred",
+    value:"23"
+  }]
+  
  
   const getSingleBusinessCategory=async (id)=>{
     
@@ -91,12 +99,13 @@ const BusinessCatReport = (props) => {
       setCategoryId(id)
        const response=await axios.get(`http://localhost:5000/BCA/bisinessDefinition/category/${id}`)
        const result=response.data.data
-       console.log('results..:',result);
+      
        setSingleCategory(result)
+       setCriterios(result.conditions)
        setOpen(true)
        setCategoryId("")
-       console.log('ID..:',id);
-       console.log('payload..:',singleCategory);
+   
+    
        
      } catch (error) {
        console.log("Error Message: " +error);
@@ -119,6 +128,7 @@ const BusinessCatReport = (props) => {
     await getData();
   
   }, []);
+  
   return (
     <>
           <div>
@@ -141,11 +151,20 @@ const BusinessCatReport = (props) => {
             <DialogTitle >Businness Category Name:</DialogTitle>
             <DialogContentText>{singleCategory.name}</DialogContentText>
             
-            <DialogTitle>Created Date:</DialogTitle>
-            <DialogContentText>{moment(singleCategory.createdAt).format("DD/MM/YYYY")}</DialogContentText>
-            <DialogTitle>Business Status:</DialogTitle>
-            <DialogContentText>{singleCategory.name}</DialogContentText>
+            <DialogTitle>Business Criteria:</DialogTitle>
+            <DialogContentText>Capital: {singleCategory.capital} Rwf</DialogContentText>
+            <DialogTitle>Other Business Criteria :</DialogTitle>
+            {
+            criterios.map((p)=>
+             <DialogContentText>-{p.criterion}</DialogContentText>
+            )
+           
+            }
+          
           </DialogContent>
+          <DialogTitle>Created Date:</DialogTitle>
+            <DialogContentText>{moment(singleCategory.createdAt).format("DD/MM/YYYY")}</DialogContentText>
+  
           <DialogActions>
             <Button autoFocus onClick={handleClose}>
               Close
