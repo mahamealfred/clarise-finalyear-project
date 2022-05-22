@@ -156,9 +156,8 @@ const BusinessCatReport = (props) => {
             <DialogTitle>Other Business Criteria :</DialogTitle>
             {
             criterios.map((p)=>
-             <DialogContentText>-{p.criterion}</DialogContentText>
+             <DialogContentText>-{p.criterion} :: {p.name}</DialogContentText>
             )
-           
             }
           
           </DialogContent>
