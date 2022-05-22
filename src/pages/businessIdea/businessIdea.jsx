@@ -242,7 +242,7 @@ console.log("capital",capital);
                             className="form-control-label"
                             for="input-username"
                           >
-                            {data.name}
+                            {data.criterion}
                           </label>
                           <input
                             key={index + 5}
